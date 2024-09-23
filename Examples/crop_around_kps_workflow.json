@@ -1,0 +1,283 @@
+{
+  "last_node_id": 1291,
+  "last_link_id": 2220,
+  "nodes": [
+    {
+      "id": 1286,
+      "type": "CropAroundKPS",
+      "pos": [
+        1153,
+        880
+      ],
+      "size": {
+        "0": 315,
+        "1": 142
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 2215
+        }
+      ],
+      "outputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "links": [
+            2211
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": [
+            2212
+          ],
+          "shape": 3,
+          "slot_index": 1
+        },
+        {
+          "name": "x",
+          "type": "INT",
+          "links": [
+            2213
+          ],
+          "shape": 3,
+          "slot_index": 2
+        },
+        {
+          "name": "y",
+          "type": "INT",
+          "links": [
+            2214
+          ],
+          "shape": 3,
+          "slot_index": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CropAroundKPS"
+      },
+      "widgets_values": [
+        1.5,
+        0.1
+      ]
+    },
+    {
+      "id": 1284,
+      "type": "ETN_CropImage",
+      "pos": [
+        1630,
+        880
+      ],
+      "size": {
+        "0": 315,
+        "1": 130
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 2204
+        },
+        {
+          "name": "x",
+          "type": "INT",
+          "link": 2213,
+          "widget": {
+            "name": "x"
+          }
+        },
+        {
+          "name": "y",
+          "type": "INT",
+          "link": 2214,
+          "widget": {
+            "name": "y"
+          }
+        },
+        {
+          "name": "width",
+          "type": "INT",
+          "link": 2211,
+          "widget": {
+            "name": "width"
+          }
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "link": 2212,
+          "widget": {
+            "name": "height"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2206
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ETN_CropImage"
+      },
+      "widgets_values": [
+        0,
+        0,
+        512,
+        512
+      ]
+    },
+    {
+      "id": 1285,
+      "type": "PreviewImage",
+      "pos": [
+        2013,
+        881
+      ],
+      "size": {
+        "0": 210,
+        "1": 246
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 2206
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 1281,
+      "type": "LoadImage",
+      "pos": [
+        786,
+        695
+      ],
+      "size": {
+        "0": 315,
+        "1": 314
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2204,
+            2215
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "kpstest3.png",
+        "image"
+      ]
+    }
+  ],
+  "links": [
+    [
+      2204,
+      1281,
+      0,
+      1284,
+      0,
+      "IMAGE"
+    ],
+    [
+      2206,
+      1284,
+      0,
+      1285,
+      0,
+      "IMAGE"
+    ],
+    [
+      2211,
+      1286,
+      0,
+      1284,
+      3,
+      "INT"
+    ],
+    [
+      2212,
+      1286,
+      1,
+      1284,
+      4,
+      "INT"
+    ],
+    [
+      2213,
+      1286,
+      2,
+      1284,
+      1,
+      "INT"
+    ],
+    [
+      2214,
+      1286,
+      3,
+      1284,
+      2,
+      "INT"
+    ],
+    [
+      2215,
+      1281,
+      0,
+      1286,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.5559917313492272,
+      "offset": {
+        "0": 256.31865953091017,
+        "1": -260.68189482390324
+      }
+    },
+    "groupNodes": {}
+  },
+  "version": 0.4
+}
