@@ -1,5 +1,9 @@
 import torch
 
+# This node analyzes a keypoints (KPS) image and returns a crop that depends on the KPS size and position.
+# Inputs: crop_size_margin and crop_pos_margin are percentages of the KPS bounding box's longest side.
+# Output: The node returns the x, y, width, and height of the crop.
+
 class CropAroundKPS:
 
     def __init__(self):
@@ -35,12 +39,11 @@ class CropAroundKPS:
 
     CATEGORY = "Keypoints Helpers"
 
-    # In ComfyUI, the data exchanged as IMAGE type is always a 4-dimensional torch.tensor with dimensions (b, h, w, c)
     def crop_around_keypoints(self, image, crop_size_margin, crop_pos_margin):
         print(f"Received image shape: {image.shape}")
         print(f"Received crop_size_margin: {crop_size_margin}")
 
-        UNCROPPED_IMAGE = (image.shape[1], image.shape[0], 0, 0)  # can return found_bbox bool flag with this appended
+        UNCROPPED_IMAGE = (image.shape[1], image.shape[0], 0, 0)
 
         if crop_pos_margin > crop_size_margin:
             print(f"Cannot have crop_pos_margin > crop_size_margin. Setting crop_pos_margin to crop_size_margin. crop_pos_margin: {crop_pos_margin}, crop_size_margin: {crop_size_margin}")
@@ -50,7 +53,7 @@ class CropAroundKPS:
         if image.dim() != 4:
             raise ValueError("Input image must be a 4-dimensional tensor with shape (b, h, w, c)")
 
-        # Handle batch size > 1, we just process the first image in the batch
+        # TODO: Handle batch size > 1. For now, we just process the first image in the batch
         image = image[0]
         print(f"Processing first image in batch, new shape: {image.shape}")
 
@@ -64,7 +67,7 @@ class CropAroundKPS:
 
         if non_black_pixels.size(0) == 0:
             # If no non-black pixels are found, return uncropped image
-            print("No non-black pixels found, returning zeroed bounding box.")
+            print("No non-black pixels found, returning uncropped image.")
             return UNCROPPED_IMAGE
 
         # Get the coordinates of the bounding box
@@ -88,7 +91,7 @@ class CropAroundKPS:
         new_y = int((image.shape[0] - new_total_height) / 2)
         print(f"Top-left corner coordinates - x: {new_x}, y: {new_y}")
 
-        # If x or y are negative then they should both be 0 and width/height should be equal to totals
+        # Check for invalid crop
         if new_x < 0 or new_y < 0:
             print(f"Top-left corner coordinates - new_x: {new_x}, new_y: {new_y}. Resetting width and height to image size so no crop is performed.")
             return UNCROPPED_IMAGE
@@ -107,7 +110,7 @@ class CropAroundKPS:
         # Double check that the bbox is within crop. If it's not, print and return uncropped image
         if (bbox_x_min < new_x or bbox_y_min < new_y or bbox_x_max > new_x + new_total_width or bbox_y_max > new_y + new_total_height):
             print(f"Bounding box not within crop - bbox_x_min: {bbox_x_min}, bbox_y_min: {bbox_y_min}, bbox_x_max: {bbox_x_max}, bbox_y_max: {bbox_y_max}")
-            print(f"Top-left corner coordinates - new_x: {new_x}, new_y: {new_y}. Resetting width and height to image size so no crop is performed.")
+            print(f"Top-left corner coordinates - new_x: {new_x}, new_y: {new_y}. Returning uncropped image.")
             return UNCROPPED_IMAGE
         
         # Return new crop width, height, x, y
