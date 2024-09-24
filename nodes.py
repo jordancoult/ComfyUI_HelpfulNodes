@@ -116,12 +116,3 @@ class CropAroundKPS:
         # Return new crop width, height, x, y
         print(f"Returning values - width: {new_total_width}, height: {new_total_height}, new_x: {new_x}, new_y: {new_y}")
         return (new_total_width, new_total_height, new_x, new_y)
-
-# Register the node with the necessary mappings
-NODE_CLASS_MAPPINGS = {
-    "CropAroundKPS": CropAroundKPS
-}
-
-NODE_DISPLAY_NAME_MAPPINGS = {
-    "CropAroundKPS": "Prepare Crop Around Keypoints"
-}
