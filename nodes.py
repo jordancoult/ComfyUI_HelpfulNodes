@@ -43,7 +43,10 @@ class CropAroundKPS:
         print(f"Received image shape: {image.shape}")
         print(f"Received crop_size_margin: {crop_size_margin}")
 
-        UNCROPPED_IMAGE = (image.shape[1], image.shape[0], 0, 0)
+        image_h = image.shape[1]
+        image_w = image.shape[2]
+
+        UNCROPPED_IMAGE = (image_w, image_h, 0, 0)
 
         if crop_pos_margin > crop_size_margin:
             print(f"Cannot have crop_pos_margin > crop_size_margin. Setting crop_pos_margin to crop_size_margin. crop_pos_margin: {crop_pos_margin}, crop_size_margin: {crop_size_margin}")
@@ -83,12 +86,12 @@ class CropAroundKPS:
 
         # Calculate new size and crop coordinates from widths
         new_total_width = int(largest_side + (2 * largest_side * crop_size_margin))
-        new_total_height = int(new_total_width * (image.shape[0] / image.shape[1]))
+        new_total_height = int(new_total_width * (image_h / image_w))
         print(f"New total width: {new_total_width}, New total height: {new_total_height}")
 
         # Calculate top-left coordinates of new width/height such that the new w/h is centered in the original image
-        new_x = int((image.shape[1] - new_total_width) / 2)
-        new_y = int((image.shape[0] - new_total_height) / 2)
+        new_x = int((image_w - new_total_width) / 2)
+        new_y = int((image_h - new_total_height) / 2)
         print(f"Top-left corner coordinates - x: {new_x}, y: {new_y}")
 
         # Check for invalid crop
@@ -103,9 +106,9 @@ class CropAroundKPS:
         if (bbox_y_min < new_y):
             new_y = max(0, bbox_y_min - CROP_MARGIN)
         if (bbox_x_max > new_x + new_total_width):
-            new_x = min(image.shape[1] - new_total_width, bbox_x_max - new_total_width + CROP_MARGIN)
+            new_x = min(image_w - new_total_width, bbox_x_max - new_total_width + CROP_MARGIN)
         if (bbox_y_max > new_y + new_total_height):
-            new_y = min(image.shape[0] - new_total_height, bbox_y_max - new_total_height + CROP_MARGIN)
+            new_y = min(image_h - new_total_height, bbox_y_max - new_total_height + CROP_MARGIN)
 
         # Double check that the bbox is within crop. If it's not, print and return uncropped image
         if (bbox_x_min < new_x or bbox_y_min < new_y or bbox_x_max > new_x + new_total_width or bbox_y_max > new_y + new_total_height):
