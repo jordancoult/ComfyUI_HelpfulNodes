@@ -106,17 +106,17 @@ class CropAroundKPS:
         if (new_total_width < bbox_width + 2 * crop_margin_x):
             print(f"Not enough horizontal space. Centering crop horizontally.")
             crop_margin_x = (new_total_width - bbox_width) / 2
-        if (bbox_x_min < new_x):
+        if (bbox_x_min < new_x + crop_margin_x):
             new_x = max(0, bbox_x_min - crop_margin_x)
-        if (bbox_x_max > new_x + new_total_width):
+        if (bbox_x_max > new_x + new_total_width - crop_margin_x):
             new_x = min(image_w - new_total_width, bbox_x_max - new_total_width + crop_margin_x)
 
         if (new_total_height < bbox_height + 2 * crop_margin_y):
             print(f"Not enough vertical space. Centering crop vertically.")
             crop_margin_y = (new_total_height - bbox_height) / 2
-        if (bbox_y_min < new_y):
+        if (bbox_y_min < new_y + crop_margin_y):
             new_y = max(0, bbox_y_min - crop_margin_y)
-        if (bbox_y_max > new_y + new_total_height):
+        if (bbox_y_max > new_y + new_total_height - crop_margin_y):
             new_y = min(image_h - new_total_height, bbox_y_max - new_total_height + crop_margin_y)
 
         # Double check that the bbox is within crop. If it's not, print and return uncropped image
