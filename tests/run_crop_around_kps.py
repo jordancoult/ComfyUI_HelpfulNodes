@@ -76,9 +76,9 @@ def main():
     )
     parser.add_argument("input_image", help="Path to input keypoints image (PNG, JPEG, etc.)")
     parser.add_argument("crop_size_margin", type=float,
-                        help="Crop size margin (percentage of bbox longest side, e.g. 0.5)")
+                        help="Crop size margin (percentage of bbox longest side, e.g. 2.0)")
     parser.add_argument("crop_pos_margin", type=float,
-                        help="Crop position margin (percentage of crop height, e.g. 0.1)")
+                        help="Crop position margin (percentage of bbox longest side, e.g. 0.5)")
     parser.add_argument("-o", "--output", default=None,
                         help="Path to save output image; defaults to INPUT_CROPPED.png")
     args = parser.parse_args()

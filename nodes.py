@@ -47,10 +47,6 @@ class CropAroundKPS:
         image_w = image.shape[2]
 
         UNCROPPED_IMAGE = (image_w, image_h, 0, 0)
-
-        if crop_pos_margin > crop_size_margin:
-            print(f"Cannot have crop_pos_margin > crop_size_margin. Setting crop_pos_margin to crop_size_margin. crop_pos_margin: {crop_pos_margin}, crop_size_margin: {crop_size_margin}")
-            crop_pos_margin = crop_size_margin
         
         # Ensure the image tensor is 4-dimensional and has shape (b, h, w, c)
         if image.dim() != 4:
@@ -100,8 +96,8 @@ class CropAroundKPS:
             return UNCROPPED_IMAGE
 
         # Move crop so it encompasses the bounding box, constraining to original image bounds. Add margin around bbox if possible
-        crop_margin_x = int(new_total_height * crop_pos_margin)
-        crop_margin_y = int(new_total_height * crop_pos_margin)
+        crop_margin_x = int(max(bbox_width, bbox_height) * crop_pos_margin)
+        crop_margin_y = int(max(bbox_width, bbox_height) * crop_pos_margin)
 
         if (new_total_width < bbox_width + 2 * crop_margin_x):
             print(f"Not enough horizontal space. Centering crop horizontally.")
