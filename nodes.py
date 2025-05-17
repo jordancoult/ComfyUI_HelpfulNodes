@@ -54,6 +54,7 @@ class CropAroundKPS:
 
         # TODO: Handle batch size > 1. For now, we just process the first image in the batch
         image = image[0]
+        print("Running crop_around_keypoints v1.0")
         print(f"Processing first image in batch, new shape: {image.shape}")
 
         # Convert to grayscale by averaging the channels, assuming the last dimension is channel
